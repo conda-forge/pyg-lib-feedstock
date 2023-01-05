@@ -18,7 +18,8 @@ build:
   number: 1
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
-  skip: true  # [win or cuda_compiler_version == '10.2']
+  # Only build for CUDA >=11.2
+  skip: true  # [win or cuda_compiler_version in ("10.2", "11.0", "11.1")]
 
 requirements:
   build:
