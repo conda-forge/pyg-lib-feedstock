@@ -1,5 +1,5 @@
 {% set name = "pyg-lib" %}
-{% set version = "0.2.0" %}
+{% set version = "0.3.0" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 package:
@@ -8,10 +8,10 @@ package:
 
 source:
   url: https://github.com/pyg-team/pyg-lib/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 3c486a72a421b4769cd1ca114522eedf25d4115ca529091db06c10264a406ac4
+  sha256: 39209f9e177b7279746995608580d5bdefc31d6f35bc085507641ba034256d12
 
 build:
-  number: 3
+  number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   # Only build for CUDA >=11.2
