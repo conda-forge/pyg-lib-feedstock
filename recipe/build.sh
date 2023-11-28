@@ -52,22 +52,10 @@ export EXTERNAL_CUTLASS_INCLUDE_DIR="${BUILD_PREFIX}/include/"
 
 export PYG_CMAKE_ARGS="${CMAKE_ARGS}"
 
-# get torch libraries for osx-arm64
-# from https://github.com/conda-forge/openmm-torch-feedstock/blob/f7b09cd93f69d7213acd88dca1b0b1770b0ac2bc/recipe/build.sh#L7
-LIBTORCH_DIR=${BUILD_PREFIX}
 if [[ "$OSTYPE" == "darwin"* && $OSX_ARCH == "arm64" ]]; then
-
-  # LIBTORCH_DIR=${RECIPE_DIR}/libtorch
-  # conda list -p ${BUILD_PREFIX} >packages.txt
-  # cat packages.txt
-  # PYTORCH_PACKAGE_VERSION=$(grep pytorch packages.txt | awk -F ' ' '{print $2}')
-  # CONDA_SUBDIR=osx-arm64 conda create -y -p ${LIBTORCH_DIR} --no-deps pytorch=${PYTORCH_PACKAGE_VERSION} python=${PY_VER}
-
-  # export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DTorch_DIR=${LIBTORCH_DIR}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
-
-  LIBTORCH_DIR=${PREFIX}
+  # For osx-arm64, us torch from PREFIX
   TORCH_PREFIX=${PREFIX}
-  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX} -DTorch_DIR=${LIBTORCH_DIR}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
+  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX} -DTorch_DIR=${TORCH_PREFIX}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
 
 else
   # For everything else than osx-arm64
@@ -76,8 +64,3 @@ else
 fi
 
 ${PYTHON} -m pip install . -vvv
-
-# if [[ "$OSTYPE" == "darwin"* && $OSX_ARCH == "arm64" ]]; then
-#   # clean up, otherwise, environment is stored in package
-#   rm -fr ${LIBTORCH_DIR}
-# fi
