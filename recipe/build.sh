@@ -54,26 +54,30 @@ export PYG_CMAKE_ARGS="${CMAKE_ARGS}"
 
 # get torch libraries for osx-arm64
 # from https://github.com/conda-forge/openmm-torch-feedstock/blob/f7b09cd93f69d7213acd88dca1b0b1770b0ac2bc/recipe/build.sh#L7
-LIBTORCH_DIR=${BUILD_PREFIX}
-if [[ "$OSTYPE" == "darwin"* && $OSX_ARCH == "arm64" ]]; then
+# LIBTORCH_DIR=${BUILD_PREFIX}
+# if [[ "$OSTYPE" == "darwin"* && $OSX_ARCH == "arm64" ]]; then
 
-  # LIBTORCH_DIR=${RECIPE_DIR}/libtorch
-  # conda list -p ${BUILD_PREFIX} >packages.txt
-  # cat packages.txt
-  # PYTORCH_PACKAGE_VERSION=$(grep pytorch packages.txt | awk -F ' ' '{print $2}')
-  # CONDA_SUBDIR=osx-arm64 conda create -y -p ${LIBTORCH_DIR} --no-deps pytorch=${PYTORCH_PACKAGE_VERSION} python=${PY_VER}
+#   # LIBTORCH_DIR=${RECIPE_DIR}/libtorch
+#   # conda list -p ${BUILD_PREFIX} >packages.txt
+#   # cat packages.txt
+#   # PYTORCH_PACKAGE_VERSION=$(grep pytorch packages.txt | awk -F ' ' '{print $2}')
+#   # CONDA_SUBDIR=osx-arm64 conda create -y -p ${LIBTORCH_DIR} --no-deps pytorch=${PYTORCH_PACKAGE_VERSION} python=${PY_VER}
 
-  # export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DTorch_DIR=${LIBTORCH_DIR}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
+#   # export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DTorch_DIR=${LIBTORCH_DIR}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
 
-  LIBTORCH_DIR=${PREFIX}
-  TORCH_PREFIX=$(${PYTHON} -c "import torch;print(torch.utils.cmake_prefix_path)")
-  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX} -DTorch_DIR=${LIBTORCH_DIR}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
+#   LIBTORCH_DIR=${PREFIX}
+#   TORCH_PREFIX=$(${PYTHON} -c "import torch;print(torch.utils.cmake_prefix_path)")
+#   export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX} -DTorch_DIR=${LIBTORCH_DIR}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
 
-else
-  # For everything else than osx-arm64
-  TORCH_PREFIX=$(${PYTHON} -c "import torch;print(torch.utils.cmake_prefix_path)")
-  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX}"
-fi
+# else
+#   # For everything else than osx-arm64
+#   TORCH_PREFIX=$(${PYTHON} -c "import torch;print(torch.utils.cmake_prefix_path)")
+#   export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX}"
+# fi
+
+# For everything else than osx-arm64
+TORCH_PREFIX=$(${PYTHON} -c "import torch;print(torch.utils.cmake_prefix_path)")
+export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX}"
 
 ${PYTHON} -m pip install . -vvv
 
