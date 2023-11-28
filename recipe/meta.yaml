@@ -45,6 +45,7 @@ requirements:
     - parallel-hashmap
     - triton                                 # [linux and cuda_compiler_version not in (undefined, 'None')]
     - cutlass                                # [cuda_compiler_version not in (undefined, 'None')]
+    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
   run_constrained:
     # 2022/02/05 hmaarrfk
     # While conda packaging seems to allow us to specify
