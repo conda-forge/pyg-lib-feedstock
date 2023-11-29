@@ -54,8 +54,7 @@ export PYG_CMAKE_ARGS="${CMAKE_ARGS}"
 
 if [[ "$OSTYPE" == "darwin"* && $OSX_ARCH == "arm64" ]]; then
   # For osx-arm64, us torch from PREFIX
-  TORCH_PREFIX=${PREFIX}
-  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX} -DTorch_DIR=${TORCH_PREFIX}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
+  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DTorch_DIR=${PREFIX}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
 
 else
   # For everything else than osx-arm64
