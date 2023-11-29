@@ -50,16 +50,6 @@ export FORCE_NINJA=1
 export EXTERNAL_PHMAP_INCLUDE_DIR="${BUILD_PREFIX}/include/"
 export EXTERNAL_CUTLASS_INCLUDE_DIR="${BUILD_PREFIX}/include/"
 
-export PYG_CMAKE_ARGS="${CMAKE_ARGS}"
-
-if [[ "$OSTYPE" == "darwin"* && $OSX_ARCH == "arm64" ]]; then
-  # For osx-arm64, us torch from PREFIX
-  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DTorch_DIR=${PREFIX}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
-
-else
-  # For everything else than osx-arm64
-  TORCH_PREFIX=$(${PYTHON} -c "import torch;print(torch.utils.cmake_prefix_path)")
-  export PYG_CMAKE_ARGS="${PYG_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${TORCH_PREFIX}"
-fi
+export PYG_CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DTorch_DIR=${PREFIX}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
 
 ${PYTHON} -m pip install . -vvv
