@@ -1,25 +1,27 @@
 diff --git a/setup.py b/setup.py
-index 05d885b..7111261 100644
+index 05d885b..de47fb9 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -38,7 +38,7 @@ class CMakeBuild(build_ext):
      def build_extension(self, ext):
          import sysconfig
-
+ 
 -        import torch
 +        # import torch
-
+ 
          extdir = os.path.abspath(osp.dirname(self.get_ext_fullpath(ext.name)))
          self.build_type = "DEBUG" if self.debug else "RELEASE"
-@@ -51,7 +51,7 @@ class CMakeBuild(build_ext):
+@@ -51,8 +51,8 @@ class CMakeBuild(build_ext):
          if not osp.exists(self.build_temp):
              os.makedirs(self.build_temp)
-
+ 
 -        WITH_CUDA = torch.cuda.is_available()
+-        WITH_CUDA = bool(int(os.getenv('FORCE_CUDA', WITH_CUDA)))
 +        # WITH_CUDA = torch.cuda.is_available()
-         WITH_CUDA = bool(int(os.getenv('FORCE_CUDA', WITH_CUDA)))
-
++        WITH_CUDA = bool(int(os.getenv('FORCE_CUDA', False)))
+ 
          cmake_args = [
+             '-DBUILD_TEST=OFF',
 @@ -61,7 +61,7 @@ class CMakeBuild(build_ext):
              f'-DWITH_CUDA={"ON" if WITH_CUDA else "OFF"}',
              f'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}',
@@ -27,15 +29,15 @@ index 05d885b..7111261 100644
 -            f'-DCMAKE_PREFIX_PATH={torch.utils.cmake_prefix_path}',
 +            # f'-DCMAKE_PREFIX_PATH={torch.utils.cmake_prefix_path}',
          ]
-
+ 
          if CMakeBuild.check_env_flag('USE_MKL_BLAS'):
 @@ -77,6 +77,9 @@ class CMakeBuild(build_ext):
              warnings.warn("Building times of 'pyg-lib' can be heavily improved"
                            " by installing 'ninja': `pip install ninja`")
-
+ 
 +        if os.getenv("PYG_CMAKE_ARGS") is not None:
 +            cmake_args += os.getenv("PYG_CMAKE_ARGS").split(" ")
 +
          build_args = []
-
+ 
          subprocess.check_call(['cmake', ext.sourcedir] + cmake_args,
