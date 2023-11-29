@@ -1,36 +1,41 @@
 diff --git a/setup.py b/setup.py
-index 05d885b..582b9da 100644
+index 05d885b..7111261 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -16,6 +16,12 @@ __version__ = '0.3.1'
- URL = 'https://github.com/pyg-team/pyg-lib'
- 
- 
-+import site
-+import torch.utils.cpp_extension
-+
-+torch.utils.cpp_extension.TORCH_LIB_PATH = site.getsitepackages()[0] + '/torch/lib'
-+
-+
- class CMakeExtension(Extension):
-     def __init__(self, name, sourcedir=''):
-         Extension.__init__(self, name, sources=[])
-@@ -61,7 +67,7 @@ class CMakeBuild(build_ext):
+@@ -38,7 +38,7 @@ class CMakeBuild(build_ext):
+     def build_extension(self, ext):
+         import sysconfig
+
+-        import torch
++        # import torch
+
+         extdir = os.path.abspath(osp.dirname(self.get_ext_fullpath(ext.name)))
+         self.build_type = "DEBUG" if self.debug else "RELEASE"
+@@ -51,7 +51,7 @@ class CMakeBuild(build_ext):
+         if not osp.exists(self.build_temp):
+             os.makedirs(self.build_temp)
+
+-        WITH_CUDA = torch.cuda.is_available()
++        # WITH_CUDA = torch.cuda.is_available()
+         WITH_CUDA = bool(int(os.getenv('FORCE_CUDA', WITH_CUDA)))
+
+         cmake_args = [
+@@ -61,7 +61,7 @@ class CMakeBuild(build_ext):
              f'-DWITH_CUDA={"ON" if WITH_CUDA else "OFF"}',
              f'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}',
              f'-DCMAKE_BUILD_TYPE={self.build_type}',
 -            f'-DCMAKE_PREFIX_PATH={torch.utils.cmake_prefix_path}',
 +            # f'-DCMAKE_PREFIX_PATH={torch.utils.cmake_prefix_path}',
          ]
- 
+
          if CMakeBuild.check_env_flag('USE_MKL_BLAS'):
-@@ -77,6 +83,9 @@ class CMakeBuild(build_ext):
+@@ -77,6 +77,9 @@ class CMakeBuild(build_ext):
              warnings.warn("Building times of 'pyg-lib' can be heavily improved"
                            " by installing 'ninja': `pip install ninja`")
- 
+
 +        if os.getenv("PYG_CMAKE_ARGS") is not None:
 +            cmake_args += os.getenv("PYG_CMAKE_ARGS").split(" ")
 +
          build_args = []
- 
+
          subprocess.check_call(['cmake', ext.sourcedir] + cmake_args,
