@@ -30,7 +30,8 @@ requirements:
     - cross-python_{{ target_platform }}                 # [build_platform != target_platform]
     - pytorch ={{ pytorch }}={{ torch_proc_type }}*      # [build_platform != target_platform]
     - cmake
-    - ninja  # NOTE(hadim): here ninja is used for linux and osx
+    - ninja        # [unix]
+    - llvm-openmp  # [osx]
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
     - parallel-hashmap
