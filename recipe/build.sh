@@ -52,6 +52,7 @@ export EXTERNAL_CUTLASS_INCLUDE_DIR="${BUILD_PREFIX}/include/"
 
 # note that we patch PYG_CMAKE_ARGS into setup.py, in order to set Torch_DIR correctly also for cross-compilation
 # note that we patch PYG_CMAKE_ARGS into setup.py, in order to set Torch_DIR correctly also for cross-compilation
+# note that we patch PYG_CMAKE_ARGS into setup.py, in order to set Torch_DIR correctly also for cross-compilation
 export PYG_CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DTorch_DIR=${PREFIX}/lib/python${PY_VER}/site-packages/torch/share/cmake/Torch"
 
 ${PYTHON} -m pip install . -vvv
