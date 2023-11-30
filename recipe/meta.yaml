@@ -31,7 +31,6 @@ requirements:
     - cmake
     - ninja        # [unix]
     - llvm-openmp  # [osx]
-    - llvm-openmp  # [osx]
     - libgomp      # [linux]
     - parallel-hashmap
     - cutlass                        # [cuda_compiler_version not in (undefined, 'None')]
