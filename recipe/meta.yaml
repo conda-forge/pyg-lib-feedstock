@@ -54,6 +54,7 @@ requirements:
     - cuda-profiler-api  # [linux or win]
     - cuda-nvrtc-dev  # [linux or win]
     - libcusparse-dev  # [linux or win]
+    - libcusolver-dev  # [linux or win]
     # No cuda-driver-dev in windows
     - cuda-driver-dev  # [linux]
     {% endif %}
