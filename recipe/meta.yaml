@@ -50,6 +50,7 @@ requirements:
     - libcurand-dev  # [linux or win]
     - libcublas-dev  # [linux or win]
     - cuda-nvrtc-dev  # [linux or win]
+    - cuda-nvtx-dev  # [linux or win]
     - cuda-profiler-api  # [linux or win]
     - cuda-nvrtc-dev  # [linux or win]
     # No cuda-driver-dev in windows
