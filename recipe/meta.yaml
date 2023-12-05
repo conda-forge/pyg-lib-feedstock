@@ -2,6 +2,12 @@
 {% set version = "0.3.1" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
+{% if cuda_compiler_version in (None, "None", True, False) %}
+{% set cuda_major = 0 %}
+{% else %}
+{% set cuda_major = environ.get("cuda_compiler_version", "11.8").split(".")[0] | int %}
+{% endif %}
+
 package:
   name: {{ name }}
   version: {{ version }}
@@ -39,6 +45,16 @@ requirements:
     - pip
     - pytorch
     - pytorch =*={{ torch_proc_type }}*
+    {% if cuda_major >= 12 %}
+    - libcufft-dev  # [linux or win]
+    - libcurand-dev  # [linux or win]
+    - libcublas-dev  # [linux or win]
+    - cuda-nvrtc-dev  # [linux or win]
+    - cuda-profiler-api  # [linux or win]
+    - cuda-nvrtc-dev  # [linux or win]
+    # No cuda-driver-dev in windows
+    - cuda-driver-dev  # [linux]
+    {% endif %}
   run:
     - python
     - parallel-hashmap
