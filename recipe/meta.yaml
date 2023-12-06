@@ -46,7 +46,9 @@ requirements:
     - pytorch
     - pytorch =*={{ torch_proc_type }}*
     {% if cuda_major >= 12 %}
+    - cudnn  # [linux or win]
     - cuda-cudart-dev
+    - libcusparse-dev  # [linux or win]
     # No cuda-driver-dev in windows
     - cuda-driver-dev  # [linux]
     {% endif %}
