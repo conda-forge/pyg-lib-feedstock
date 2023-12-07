@@ -38,7 +38,6 @@ if [[ ${cuda_compiler_version} != "None" ]]; then
   fi
 
   export USE_CUDNN=1
-  export USE_CUSPARSELT=1
 else
   export FORCE_CUDA=0
 fi

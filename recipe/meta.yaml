@@ -59,7 +59,6 @@ requirements:
     - libcusparse-dev  # [linux or win]
     - libcusolver-dev  # [linux or win]
     {% endif %}
-    - cusparselt
   run:
     - python
     - parallel-hashmap
