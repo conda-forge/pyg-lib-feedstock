@@ -49,7 +49,17 @@ requirements:
     - cuda-cudart-dev
     # No cuda-driver-dev in windows
     - cuda-driver-dev  # [linux]
+    - libcufft-dev  # [linux or win]
+    - libcurand-dev  # [linux or win]
+    - libcublas-dev  # [linux or win]
+    - cuda-nvrtc-dev  # [linux or win]
+    - cuda-nvtx-dev  # [linux or win]
+    - cuda-profiler-api  # [linux or win]
+    - cuda-nvrtc-dev  # [linux or win]
+    - libcusparse-dev  # [linux or win]
+    - libcusolver-dev  # [linux or win]
     {% endif %}
+    - cusparselt
   run:
     - python
     - parallel-hashmap
