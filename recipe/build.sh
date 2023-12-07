@@ -37,7 +37,7 @@ if [[ ${cuda_compiler_version} != "None" ]]; then
     exit 1
   fi
 
-  CMAKE_ARGS += " -DUSE_CUDNN=ON"
+  CMAKE_ARGS+=" -DUSE_CUDNN=ON"
 else
   export FORCE_CUDA=0
 fi
