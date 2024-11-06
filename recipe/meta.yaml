@@ -19,16 +19,16 @@ source:
     - fix-cmake.patch
 
 build:
-  number: 1
+  number: 2
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
-  # Only build for CUDA >=11.8
-  skip: true  # [win or cuda_compiler_version == "11.2"]
+  # No pytorch package for windows at conda-forge
+  skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ stdlib("c") }}
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}                             # [cuda_compiler_version not in (undefined, 'None')]
     - python                                             # [build_platform != target_platform]
