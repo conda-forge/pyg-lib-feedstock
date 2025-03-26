@@ -1,0 +1,22 @@
+From 0859c435bc4c5b95e956fd6766f7f439ad378fef Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Fri, 14 Feb 2025 08:13:41 +1100
+Subject: [PATCH 2/2] look harder for pytorch
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4365a6e..d829908 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -76,7 +76,7 @@ include_directories("${METIS_DIR}/include")
+ add_subdirectory("${METIS_DIR}/libmetis")
+ target_link_libraries(${PROJECT_NAME} PRIVATE metis)
+ 
+-find_package(Torch REQUIRED)
++find_package(Torch CONFIG REQUIRED)
+ target_link_libraries(${PROJECT_NAME} PRIVATE ${TORCH_LIBRARIES})
+ 
+ find_package(OpenMP)

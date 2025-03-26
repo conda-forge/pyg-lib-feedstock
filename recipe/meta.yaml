@@ -1,4 +1,3 @@
-{% set name = "pyg-lib" %}
 {% set version = "0.4.0" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -9,21 +8,38 @@
 {% endif %}
 
 package:
-  name: {{ name }}
+  name: pyg-lib
   version: {{ version }}
 
 source:
-  git_url:  https://github.com/pyg-team/pyg-lib/
-  git_rev: {{ version }}
-  patches:
-    - fix-cmake.patch
+  - url: https://github.com/pyg-team/pyg-lib/archive/refs/tags/{{ version }}.tar.gz
+    sha256: 6a515815f69f925a0ba15e743ac071629e1fd1ae9c46576db8b7f91ab40a8eac
+    patches:
+      - patches/0001-fix-cmake.patch
+      # due to https://github.com/conda-forge/pytorch-cpu-feedstock/issues/357
+      - patches/0002-look-harder-for-pytorch.patch
+
+  - folder: third_party/cutlass
+    git_url: https://github.com/NVIDIA/cutlass.git
+    git_rev: 6f47420213f757831fae65c686aa471749fa8d60
+
+  - folder: third_party/METIS
+    git_url: https://github.com/KarypisLab/METIS.git
+    git_rev: 22008804e8c9b78893ae10a94c0d8b4b592438b4
+
+  - folder: third_party/parallel-hashmap
+    git_url: https://github.com/greg7mdp/parallel-hashmap.git
+    git_rev: 01ea8093e6d0293ea252e8027c17d7dff26a9c9f
 
 build:
-  number: 1
+  number: 2
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
-  # Only build for CUDA >=11.8
-  skip: true  # [win or cuda_compiler_version == "11.2"]
+  # Only build for CUDA >=12.0; 11.8 dropped in conda-forge's pytorch
+  skip: true  # [win or cuda_compiler_version == "11.8"]
+  ignore_run_exports_from:
+    # see comment below
+    - libprotobuf
 
 requirements:
   build:
@@ -42,22 +58,25 @@ requirements:
   host:
     - python
     - pip
+    - setuptools
     - pytorch
     - pytorch =*={{ torch_proc_type }}*
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    # ensure https://github.com/conda-forge/pytorch-cpu-feedstock/pull/382 or newer gets pulled in
+    - libprotobuf >=5.29
     {% if cuda_major >= 12 %}
+    - cuda-version =={{ cuda_compiler_version }}
     - cuda-cudart-dev
     # No cuda-driver-dev in windows
     - cuda-driver-dev  # [linux]
-    - libcufft-dev
-    - libcurand-dev
-    - libcublas-dev
     - cuda-nvrtc-dev
     - cuda-nvtx-dev
     - cuda-profiler-api
-    - cuda-nvrtc-dev
-    - libcusparse-dev
+    - libcublas-dev
+    - libcufft-dev
+    - libcurand-dev
     - libcusolver-dev
+    - libcusparse-dev
+    - nvtx-c
     {% endif %}
   run:
     - python
