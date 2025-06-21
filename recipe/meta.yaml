@@ -32,7 +32,7 @@ source:
     git_rev: 01ea8093e6d0293ea252e8027c17d7dff26a9c9f
 
 build:
-  number: 2
+  number: 3
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   # Only build for CUDA >=12.0; 11.8 dropped in conda-forge's pytorch
@@ -60,7 +60,7 @@ requirements:
     - pip
     - setuptools
     - pytorch
-    - pytorch =*={{ torch_proc_type }}*
+    - pytorch * {{ torch_proc_type }}*
     # ensure https://github.com/conda-forge/pytorch-cpu-feedstock/pull/382 or newer gets pulled in
     - libprotobuf >=5.29
     {% if cuda_major >= 12 %}
@@ -86,7 +86,7 @@ requirements:
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
-    - pytorch =*={{ torch_proc_type }}*
+    - pytorch * {{ torch_proc_type }}*
 
 test:
   imports:
