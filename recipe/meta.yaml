@@ -32,7 +32,7 @@ source:
     git_rev: 01ea8093e6d0293ea252e8027c17d7dff26a9c9f
 
 build:
-  number: 3
+  number: 4
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   # Only build for CUDA >=12.0; 11.8 dropped in conda-forge's pytorch
