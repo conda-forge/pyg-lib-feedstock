@@ -1,12 +1,6 @@
 {% set version = "0.4.0" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
-{% if cuda_compiler_version in (None, "None", True, False) %}
-{% set cuda_major = 0 %}
-{% else %}
-{% set cuda_major = environ.get("cuda_compiler_version", "11.8").split(".")[0] | int %}
-{% endif %}
-
 package:
   name: pyg-lib
   version: {{ version }}
@@ -35,8 +29,7 @@ build:
   number: 6
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
-  # Only build for CUDA >=12.0; 11.8 dropped in conda-forge's pytorch
-  skip: true  # [win or cuda_compiler_version == "11.8"]
+  skip: true  # [win]
 
 requirements:
   build:
@@ -58,7 +51,7 @@ requirements:
     - setuptools
     - pytorch
     - pytorch * {{ torch_proc_type }}*
-    {% if cuda_major >= 12 %}
+    {% if cuda_compiler_version != "None" %}
     - cuda-version =={{ cuda_compiler_version }}
     - cuda-cudart-dev
     # No cuda-driver-dev in windows
