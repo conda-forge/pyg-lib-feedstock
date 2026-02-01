@@ -22,8 +22,6 @@ cxx_compiler:
 - clangxx
 cxx_compiler_version:
 - '19'
-libprotobuf:
-- 6.31.1
 llvm_openmp:
 - '19'
 macos_machine:
