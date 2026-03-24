@@ -1,4 +1,4 @@
-{% set version = "0.4.0" %}
+{% set version = "0.6.0" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
@@ -13,7 +13,7 @@ package:
 
 source:
   - url: https://github.com/pyg-team/pyg-lib/archive/refs/tags/{{ version }}.tar.gz
-    sha256: 6a515815f69f925a0ba15e743ac071629e1fd1ae9c46576db8b7f91ab40a8eac
+    sha256: 6fbdcc4e1a47891abbe4a58ffaa38e3bc4ad340faba2ba9d9500bdaa88a78427
     patches:
       - patches/0001-fix-cmake.patch
       # due to https://github.com/conda-forge/pytorch-cpu-feedstock/issues/357
@@ -32,7 +32,7 @@ source:
     git_rev: 01ea8093e6d0293ea252e8027c17d7dff26a9c9f
 
 build:
-  number: 5
+  number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   # Only build for CUDA >=12.0; 11.8 dropped in conda-forge's pytorch
